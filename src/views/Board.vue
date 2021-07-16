@@ -5,13 +5,12 @@
       <Header @setInput="setInput"></Header>
       <!---Menu -->
       <Menu v-if="value"></Menu>
-
-
       <!--- contents -->
-      <v-main>
+      <v-main  class="pt-2 pt-sm-2 pt-xs-2 pt-md-0 pt-lg-0 pt-xl-0">
         <Contents></Contents>
       </v-main>
       <Footer></Footer>
+
     </v-app>
   </v-app>
 </template>
@@ -36,7 +35,6 @@ export default{
   methods:{
     setInput(value){
       this.value = value;
-      console.log("자식 컴포넌트에게 값을 받았어요 : ", this.value);
     }
   }
 

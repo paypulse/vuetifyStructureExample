@@ -17,6 +17,16 @@ const routes = [
     name: 'Board',
     component: () => import('../views/Board')
 
+  },
+  {
+    path: '/dashBoard',
+    name: 'DashBoard',
+    component: () => import('../views/DashBoard')
+  },
+  {
+    path: '/cutomer',
+    name: 'CustomerView',
+    component: () => import('../components/customer/CustomerView')
   }
 ]
 
