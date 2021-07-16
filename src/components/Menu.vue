@@ -16,7 +16,7 @@
 
         <!-----DEPTH가 있는 메뉴  ---->
         <v-list-group v-else-if="item.subItems" :key="item.text" v-model="item.model"
-          append-icon="mdi-chevron-down" :prepend-icon="item.model ? item.icon : item['icon-alt']" v-on:click="selectMenu($event)"  >
+          append-icon="mdi-chevron-down" :prepend-icon="item.model ? item.icon : item['icon-alt']" v-on:click="selectMenu(item.path)"  >
           <template v-slot:activator>
               <v-list-item-content>
                 <v-list-item-title >
@@ -25,7 +25,7 @@
               </v-list-item-content>
           </template>
 
-          <v-list-item v-for="subItem in item.subItems" :key="subItem.text"  link>
+          <v-list-item v-for="subItem in item.subItems" :key="subItem.text" v-on:click="selectMenu(subItem.path)"  link>
              <v-list-item-content>
                <v-list-item-title style="text-align: center"> {{ subItem.text }} </v-list-item-title>
              </v-list-item-content>
@@ -34,7 +34,7 @@
 
 
         <!---- DEPTH가 없는 메뉴 ----->
-        <v-list-item v-else :key="item.text" v-on:click="selectMenu($event)"  link>
+        <v-list-item v-else :key="item.text" v-on:click="selectMenu(item.path)"  link>
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -55,6 +55,8 @@
 export default{
   name: "Menu",
   data: () =>({
+    // menuList: [], --> 추후 API로 값을 가져올 곳
+    eventBus: '',
     menuList: [
       { icon: 'mdi-contacts', text: '회원 관리',path:'CustomerView'},
       { icon: 'mdi-history', text: 'AS 관리', path:'AsSettings' },
@@ -65,8 +67,8 @@ export default{
         model: false,
         path:'',
         subItems:[
-            {icon:'mdi-files' , text: 'child1', path:''},
-            {icon:'mdi-files' , text: 'child2', path:'' }
+            {icon:'mdi-files' , text: 'child1', path:'child1'},
+            {icon:'mdi-files' , text: 'child2', path:'child2' }
         ]
       },
       { icon: 'mdi-cog', text: '시스템 관리', path:'' },
@@ -80,8 +82,9 @@ export default{
     console.log(this.menuList);
   },
   methods: {
-    selectMenu : function(event){
-      console.log(event);
+    selectMenu : function(data){
+      //Menu -> contents component setting
+      this.$emit("setContents", data);
     }
   }
 

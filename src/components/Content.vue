@@ -1,8 +1,9 @@
 <template>
-  <v-container class="fill-height" fluid>
+  <v-container class="fill-height"  fluid>
     <v-row align="center" justify="center">
-      <v-col class="text-center">
-        <customer-view></customer-view>
+      <v-col class="text-center" @setContents ="setContent">
+
+        <customer-view v-if="value" />
 
       </v-col>
     </v-row>
@@ -16,6 +17,19 @@ export default {
   components: {CustomerView},
   props:{
     source: String
+  },
+  data : () =>({
+    value :""
+  }),
+  created() {
+      console.log("contents");
+
+  },
+  methods:{
+    setContent(value){
+      this.value = value;
+
+    }
   }
 };
 </script>
