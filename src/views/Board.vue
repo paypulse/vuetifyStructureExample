@@ -9,7 +9,7 @@
       <v-main  class="pt-2 pt-sm-2 pt-xs-2 pt-md-0 pt-lg-0 pt-xl-0">
         <!---menu --->
         <customer-view v-if="menu === 'CustomerView' || menu === ''"></customer-view>
-
+        <error-log-view v-if="menu === 'ErrorLogView'"></error-log-view>
       </v-main>
       <Footer></Footer>
 
@@ -22,9 +22,10 @@ import Footer from "@/components/Footer";
 import Menu from "@/components/Menu";
 import Header from "@/components/Header";
 import CustomerView from "@/components/customer/CustomerView";
+import ErrorLogView from "@/components/customer/ErrorLogView";
 export default{
   name: "Board",
-  components: {CustomerView, Menu, Footer,Header},
+  components: {ErrorLogView, CustomerView, Menu, Footer,Header},
   data : () =>({
     value :"",
     menu: ""

@@ -27,6 +27,11 @@ const routes = [
     path: '/cutomer',
     name: 'CustomerView',
     component: () => import('../components/customer/CustomerView')
+  },
+  {
+    path: '/errorLog',
+    name: 'ErrorLogView',
+    component: () => import('../components/customer/ErrorLogView')
   }
 ]
 
