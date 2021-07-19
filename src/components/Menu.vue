@@ -84,7 +84,12 @@ export default{
   methods: {
     selectMenu : function(data){
       //Menu -> contents component setting
-      this.$emit("setContents", data);
+    //  console.log(data);
+     // console.log(data);
+     this.$root.$emit("menuItem",data);
+     this.$emit("menuItem",data);
+
+
     }
   }
 
