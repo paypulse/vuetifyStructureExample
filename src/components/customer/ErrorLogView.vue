@@ -5,7 +5,7 @@
     </v-row>
     &nbsp;
     <v-row>
-      <v-btn style="position: relative; left:84%;" color="primary">삭제</v-btn>
+      <v-btn style="position: relative; left:84%;" color="primary" v-on:click="selectDeleteRow">삭제</v-btn>
       <v-btn style="position: relative; left:85%;" color="primary">전체 삭제</v-btn>
     </v-row>
     &nbsp;
@@ -107,12 +107,28 @@ export default {
       rows.forEach(d =>{
         this.errorLogIds.push(d.id);
       })
-      console.log("check log id  :", this.errorLogIds);
-
 
     },
     deleteAllRow: function(){
 
+    },
+    selectDeleteRow: function(){
+
+      console.log("check errorItem : ",this.errorLogIds);
+      if(this.errorLogIds.length <=0){
+        alert("삭제할 item을 선택해 주세요");
+        return;
+      }
+
+      axios.post("http://192.168.50.218:8084/loggerMenu/loggerDeleteRow",{"loggerId":this.errorLogIds})
+      .then(res =>{
+        console.log(res.data.status);
+        alert("삭제  ", res.data.status);
+        this.initData();
+        this.$router.go();
+      }).catch(err =>{
+        alert(err);
+      });
     }
 
   }
