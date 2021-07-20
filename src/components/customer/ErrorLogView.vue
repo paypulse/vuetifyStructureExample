@@ -1,47 +1,119 @@
 <template>
-  <v-container class="grey lighten-4">
-    <v-row>
+  <v-container class="grey lighten-5" >
+    <v-row no-gutters style="position: relative; left: 100px;" >
       <h1> 에러 로그 조회 </h1>
     </v-row>
     &nbsp;
     <v-row>
-      <v-data-table
-          v-model="selected"
+      <v-btn style="position: relative; left:84%;" color="primary">삭제</v-btn>
+      <v-btn style="position: relative; left:85%;" color="primary">전체 삭제</v-btn>
+    </v-row>
+    &nbsp;
+    <v-row style="position: relative; left: 100px;">
+      <v-data-table height="250px"
+                    width="1000px"
           :headers="headers"
-          :items="desserts"
-          :single-select="singleSelect"
-          item-key="name"
+          v-model="selected"
+          :items="errorLogList"
+          item-key="id"
+          class="elevation-1"
           show-select
-          class="elevation-1">
-        <template v-slot:top>
-
-        </template>
+          checkbox-color="red"
+          dense
+          @click:row="selectRow">
       </v-data-table>
+
     </v-row>
 
+    &nbsp;&nbsp;
+    <v-row style="position: relative; left: 100px;" >
+     <v-list>
+       <v-list-item>
+         <v-list-item-action>
+           <v-list-item-title>ErrorTime</v-list-item-title>
+         </v-list-item-action>
+<!--         <v-divider vertical="true"></v-divider>-->
+         &nbsp;&nbsp;
+         <v-list-item-content>
+           <span>{{ errorTime }}</span>
+         </v-list-item-content>
+         &nbsp;&nbsp;
+         <v-list-item-action>
+           <v-list-item-title>Message</v-list-item-title>
+         </v-list-item-action>
+         &nbsp;&nbsp;
+         <v-list-item-content>
+           <span>{{ selectMsg }}</span>
+         </v-list-item-content>
+       </v-list-item>
+
+     </v-list>
+
+    </v-row>
 
   </v-container>
 </template>
 
 <script>
-
+import axios from "axios";
 export default {
   name: "ErrorLogView",
   data: () =>({
     headers: [
-      { text: 'No.', align: 'start', sortable: false, value: 'name', width: "10px"},
-      { text: 'ID', value: 'calories',width: "80px" },
-      { text: 'Phase', value: 'fat',width: "90px"  },
-      { text: 'System', value: 'carbs',width: "100px"  },
-      { text: 'Server Name', value: 'protein',width: "150px" },
-      { text: 'Host Name', value: 'iron',width: "150px" },
-      { text: 'URL', value: 'iron',width: "90px" },
-      { text: 'Message', value: 'iron',width: "100px" },
-      { text: 'Time', value: 'iron',width: "90px" }
+      { text: 'ID'          , value: 'id'            ,width: "80px" , align:'center', sortable: true},
+      { text: 'errorTime'   , value: 'errorTime'     ,width: "120px", align:'center', sortable: true},
+      { text: 'message'     , value: 'message'       ,width: "250px", align:'center', sortable: true},
+      { text: 'logPath'     , value: 'logPath'       ,width: "100px", align:'center', sortable: true},
+      { text: 'phase'       , value: 'phase'         ,width: "90px" , align:'center', sortable: true},
+      { text: 'systemN'     , value: 'systemN'       ,width: "100px", align:'center', sortable: true}
     ],
-    desserts : []
+    errorLogList : [],
+    selected:[],
+    errorLogIds: [],
+    selectMsg:'',
+    errorTime:'',
+    totalCnt: 0
   }),
   created() {
+    this.initData();
+
+  },
+  updated() {
+    console.log(this.selected);
+    //delete Row
+    this.deleteRow(this.selected);
+    //delete All row
+
+
+  },
+  methods: {
+    initData: function(){
+      axios.get("http://192.168.50.218:8084/loggerMenu/loggerGridList").then(res =>{
+        this.errorLogList = res.data.data;
+        this.totalCnt = res.data.processCnt;
+        console.log(this.totalCnt);
+
+      }).catch(err =>{
+        console.log(err);
+      });
+    },
+    selectRow: function(e){
+      console.log(e);
+      this.errorTime = e.errorTime;
+      this.selectMsg = e.message;
+    },
+    deleteRow: function(rows){
+      this.errorLogIds = [];
+      rows.forEach(d =>{
+        this.errorLogIds.push(d.id);
+      })
+      console.log("check log id  :", this.errorLogIds);
+
+
+    },
+    deleteAllRow: function(){
+
+    }
 
   }
 }

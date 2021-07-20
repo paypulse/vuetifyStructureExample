@@ -155,7 +155,12 @@ export default {
       { text: '계약서', value: 'iron' ,width: "90px"},
       { text: '등록일', value: 'iron' ,width: "90px"},
 
-    ]
+    ],
+    date: '',
+    singleSelect: false,
+    selected: [],
+    desserts: [],
+    menu2: false
   }),
   created() {
   },
