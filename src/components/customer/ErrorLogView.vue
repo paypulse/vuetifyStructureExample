@@ -125,6 +125,8 @@ export default {
         console.log(res.data.status);
         alert("삭제  ", res.data.status);
         this.initData();
+
+        //화면 refresh인데 추후 다시 봐야될거 같다.
         this.$router.go();
       }).catch(err =>{
         alert(err);

@@ -20,6 +20,12 @@ export default {
  methods: {
    Login : function(){
      // 쿠키와 세션 처리
+     console.log(this.loginId);
+     console.log(this.loginPassword);
+
+
+
+
      this.$router.push("/board");
 
    }
