@@ -9,6 +9,9 @@
   </div>
 </template>
 <script>
+
+import axios from "axios";
+
 export default {
  name: 'LoginView',
  data : function(){
@@ -22,12 +25,24 @@ export default {
      // 쿠키와 세션 처리
      console.log(this.loginId);
      console.log(this.loginPassword);
+     this.login();
 
+    // this.$router.push("/board");
 
+   },
+   login : function(){
+     axios.post("http://192.168.50.218:8084/login",{"id" : this.loginId, "pw": this.loginPassword}).then(res =>{
+       console.log(res);
 
+        if(res.data.data === 1){
+          this.$router.push("/board");
+        }else{
+          alert(res.data.msg);
+        }
 
-     this.$router.push("/board");
-
+     }).catch(err =>{
+       console.log(err);
+     });
    }
  }
 }

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "ASSettingView.vue"
+  name: "ASSettingView"
 }
 </script>
 

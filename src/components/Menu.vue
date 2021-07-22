@@ -74,9 +74,13 @@ export default{
       { icon: 'mdi-cog','icon-alt':'mdi-cog', text: '시스템 관리',
         model:false, path:'ErrorLogView',
         subItems:[
-          {icon:'mdi-files' , text: '에러 로그 관리', path:'ErrorLogView'}
+          {icon:'mdi-files' , text: '에러 로그 관리', path:'ErrorLogView'},
+          {icon:'mdi-files' , text: '메뉴 관리' , path:'MenuSetting'}
         ]},
-      { icon: 'mdi-message', text: '문자관리', path:'' },
+      { icon: 'mdi-message', text: '문자관리', path:'',
+
+
+      },
       { icon: 'mdi-help-circle', text: 'Help', path:'' },
       { icon: 'mdi-cellphone-link', text: '앱 관리', path:'' },
       { icon: 'mdi-keyboard', text: '납부관리', path:'' }]
