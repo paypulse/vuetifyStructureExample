@@ -34,8 +34,10 @@ export default {
      axios.post("http://192.168.50.218:8084/login",{"id" : this.loginId, "pw": this.loginPassword}).then(res =>{
        console.log(res);
 
-        if(res.data.data === 1){
-          this.$router.push("/board");
+        if(res.data.data.loginYN === 1){
+          //this.$router.push("/board");
+          this.$router.push({name: 'Board', query: { userNm: res.data.data.userInfo.userNm} });
+
         }else{
           alert(res.data.msg);
         }

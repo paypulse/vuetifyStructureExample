@@ -8,16 +8,17 @@
       <!--- contents -->
       <v-main  class="pt-2 pt-sm-2 pt-xs-2 pt-md-0 pt-lg-0 pt-xl-0">
         <!---menu --->
-<!--        <template >-->
-<!--          <customer-view v-if="menu === 'CustomerView' || menu === ''"></customer-view>-->
-<!--          <error-log-view v-if="menu === 'ErrorLogView'"></error-log-view>-->
-<!--          <MenuSetting v-if="menu === 'MenuSetting'"></MenuSetting>-->
-<!--        </template>-->
-        <!-- 로그인시 첫 화면 설정 -->
         <customer-view v-if="menu === 'CustomerView' || menu === ''"></customer-view>
-        <keep-alive>
-          <component v-bind:is =menu> </component>
-        </keep-alive>
+        <error-log-view v-if="menu === 'ErrorLogView'"></error-log-view>
+        <MenuSetting v-if="menu === 'MenuSetting'"></MenuSetting>
+
+
+                <!---- 추후 메뉴 설정 기능 추가시  -->
+        <!-- 로그인시 첫 화면 설정 -->
+<!--        <customer-view v-if="menu === 'CustomerView' || menu === ''"></customer-view>-->
+<!--        <keep-alive>-->
+<!--          <component v-bind:is =menu> </component>-->
+<!--        </keep-alive>-->
 
       </v-main>
       <Footer></Footer>
@@ -41,6 +42,9 @@ export default{
     value :"",
     menu: ""
   }),
+  mounted() {
+
+  },
   created() {
     var eventBus = new Vue();
     eventBus.$on('drawer',function(data){
@@ -55,7 +59,7 @@ export default{
     },
     setMenu(value){
       this.menu = value;
-      console.log("menu : ", this.menu);
+
     }
   }
 

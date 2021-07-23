@@ -23,6 +23,7 @@ const routes = [
   {
     path: '/board',
     name: 'Board',
+    props: true,
     component: () => import('../views/Board')
 
   },

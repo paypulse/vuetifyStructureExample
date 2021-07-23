@@ -58,32 +58,37 @@ export default{
     // menuList: [], --> 추후 API로 값을 가져올 곳
     eventBus: '',
     menuList: [
-      { icon: 'mdi-contacts', text: '회원 관리',path:'CustomerView'},
-      { icon: 'mdi-history', text: 'AS 관리', path:'AsSettings' },
-      { icon: 'mdi-card-account-details-outline', text: '교사관리', path:''},
-      //List Group Example
-      { icon: 'mdi-home',
-        'icon-alt': 'mdi-home', text:'사용자 관리',
-        model: false,
-        path:'',
+      { icon: 'mdi-contacts','icon-alt':'mdi-contacts', text: '회원 관리',
+        model:false, path:'CustomerView',
         subItems:[
-            {icon:'mdi-files' , text: 'child1', path:'child1'},
-            {icon:'mdi-files' , text: 'child2', path:'child2' }
-        ]
-      },
+          {icon: 'mdi-files', text: '회원관리',path:'CustomerView'},
+          {icon: 'mdi-files', text: '취소/환불 회원관리',path:'CancelCusctomerView'}
+      ]},
+      // { icon: 'mdi-history', text: 'AS 관리', path:'AsSettings' },
+      // { icon: 'mdi-card-account-details-outline', text: '교사관리', path:''},
+      //List Group Example
+      // { icon: 'mdi-home',
+      //   'icon-alt': 'mdi-home', text:'사용자 관리',
+      //   model: false,
+      //   path:'',
+      //   subItems:[
+      //       {icon:'mdi-files' , text: 'child1', path:'child1'},
+      //       {icon:'mdi-files' , text: 'child2', path:'child2' }
+      //   ]
+      // },
       { icon: 'mdi-cog','icon-alt':'mdi-cog', text: '시스템 관리',
         model:false, path:'ErrorLogView',
         subItems:[
           {icon:'mdi-files' , text: '에러 로그 관리', path:'ErrorLogView'},
-          {icon:'mdi-files' , text: '메뉴 관리' , path:'MenuSetting'}
+          // {icon:'mdi-files' , text: '메뉴 관리' , path:'MenuSetting'}
         ]},
       { icon: 'mdi-message', text: '문자관리', path:'',
 
 
       },
-      { icon: 'mdi-help-circle', text: 'Help', path:'' },
       { icon: 'mdi-cellphone-link', text: '앱 관리', path:'' },
-      { icon: 'mdi-keyboard', text: '납부관리', path:'' }]
+      // { icon: 'mdi-keyboard', text: '납부관리', path:'' }
+    ]
   }),
   mounted() {
 

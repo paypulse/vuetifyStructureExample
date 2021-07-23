@@ -1,137 +1,174 @@
 <template>
-  <v-container class="grey lighten-5">
-    <v-row no-gutters>
+  <v-form v-model="valid">
+      <v-container class="grey lighten-5" fluid>
+        <v-row no-gutters >
+          <h1> 회원 관리 조회</h1>
+        </v-row>
 
-      <v-col  xs="1" sm="1">
-        <span>지사 </span>
-      </v-col>
-      <v-col class="d-flex" xs="2" sm="2" >
-        <v-select :items="items" dense></v-select>
-      </v-col>
+        <v-row align="center">
+          <v-col cols="1">
+             <v-subheader>지사</v-subheader>
+          </v-col>
+          <v-col cols="1">
+            <v-select v-model="areaSelected" :items="areaSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>
+          </v-col>
+          <v-col cols="1">
+            <v-subheader>센터</v-subheader>
+          </v-col>
+          <v-col cols="1">
+            <v-text-field disabled label="포텐"></v-text-field>
+          </v-col>
+          <v-col cols="1">
+            <v-subheader>상품</v-subheader>
+          </v-col>
+          <v-col cols="1">
+            <v-select v-model="goodsSelected" :items="goodsSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>
+          </v-col>
+          <v-col cols="1">
+            <v-subheader>납부현황</v-subheader>
+          </v-col>
+          <v-col cols="1">
+            <v-select v-model="paymentSelected" :items="paymentSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>
+          </v-col>
+          <v-col cols="1">
+            <v-subheader>온라인 교육 상태</v-subheader>
+          </v-col>
+          <v-col cols="1">
+            <v-select v-model="onlineSelected" :items="onlineSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>
+          </v-col>
+          <v-col cols="1">
+            <v-subheader>방문교육상태</v-subheader>
+          </v-col>
+          <v-col cols="1">
+            <v-select v-model="visitSelected" :items="visitSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>
+          </v-col>
+        </v-row>
+        <!----  등록일 date picker ---->
+        <v-row>
+          <!---- start date ---->
+            <v-col cols="12" lg="2" md="4">
+              <v-menu
+                  ref="sDMenu"
+                  v-model="sDMenu"
+                  :close-on-content-click="false"
+                  :return-value.sync="startDate"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px">
+                <template v-slot:activator="{on, attrs}">
+                  <v-text-field
+                      v-model="startDate"
+                      label="Start Date"
+                      prepend-icon="event"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on">
+                  </v-text-field>
+                </template>
+                <v-date-picker v-model="startDate" no-title scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="sDMenu = false">Cancel</v-btn>
+                  <v-btn text color="primary" @click="$refs.sDMenu.save(startDate)">OK</v-btn>
+                </v-date-picker>
+              </v-menu>
 
-      <v-col  xs="1" sm="1"  offset-md="1">
-        <span>센터 </span>
-      </v-col>
-      <v-col class="d-flex" xs="2" sm="2" >
-        <v-select :items="items" dense></v-select>
-      </v-col>
-
-      <v-col  xs="1" sm="1"  offset-md="1">
-        <span>상품</span>
-      </v-col>
-      <v-col class="d-flex" xs="2" sm="2">
-        <v-select :items="items" dense></v-select>
-      </v-col>
-    </v-row>
-    <v-row no-gutters>
-      <v-col  xs="1" sm="1"  >
-        <span>납부현황</span>
-      </v-col>
-      <v-col class="d-flex" xs="2" sm="2">
-        <v-select :items="items" dense></v-select>
-      </v-col>
-
-      <v-col  xs="1" sm="1"  offset-md="1">
-        <span>온라인 교육상태 </span>
-      </v-col>
-      <v-col class="d-flex" xs="2" sm="2" >
-        <v-select :items="items" dense></v-select>
-      </v-col>
-
-      <v-col  xs="1" sm="1"  offset-md="1">
-        <span>방문교육상태</span>
-      </v-col>
-      <v-col class="d-flex" xs="2" sm="2">
-        <v-select :items="items" dense></v-select>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col xs="1" sm="1" >
-        <span>등록일</span>
-      </v-col>
-      <v-col class="d-flex" xs="2" sm="2">
-        <v-menu v-model="menu2" :close-on-content-click="false"
-            :nudge-right="40"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-                v-model="date"
-                label="Picker without buttons"
-                prepend-icon="mdi-calendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-              v-model="date"
-              @input="menu2 = false"
-          ></v-date-picker>
-        </v-menu>
-      </v-col>
-      ~
-      <v-col class="d-flex" xs="2" sm="2">
-        <v-menu v-model="menu2" :close-on-content-click="false"
-                :nudge-right="40"
+            </v-col>
+          <!----- End date ----->
+          <v-col cols="12" lg="2" md="4">
+            <v-menu
+                ref="eDMenu"
+                v-model="eDMenu"
+                :close-on-content-click="false"
+                :return-value.sync="endDate"
                 transition="scale-transition"
                 offset-y
-                min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-                v-model="date"
-                label="Picker without buttons"
-                prepend-icon="mdi-calendar"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-              v-model="date"
-              @input="menu2 = false"
-          ></v-date-picker>
-        </v-menu>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col xs="1" sm="1" >
-        <span>검색유형</span>
-      </v-col>
-      <v-col class="d-flex" xs="2" sm="2" >
-        <v-select :items="items" dense></v-select>
-      </v-col>
-      <v-col class="d-flex" xs="2" sm="2"  offset-md="7">
-        <v-btn class="ma-2" tile color="indigo" dark>조회</v-btn>
-      </v-col>
-    </v-row>
+                min-width="290px">
+              <template v-slot:activator="{on, attrs}">
+                <v-text-field
+                    v-model="endDate"
+                    label="Start Date"
+                    prepend-icon="event"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on">
+                </v-text-field>
+              </template>
+              <v-date-picker v-model="endDate" no-title scrollable>
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="eDMenu = false">Cancel</v-btn>
+                <v-btn text color="primary" @click="$refs.eDMenu.save(endDate)">OK</v-btn>
+              </v-date-picker>
+            </v-menu>
+          </v-col>
+          <!----- search bar---->
+          <v-col cols="12" lg="2" md="4">
+            <v-subheader>검색유형</v-subheader>
+          </v-col>
+          <v-col cols="12" lg="2" md="4">
+            <v-select v-model="onlineSelected" :items="searchSelectBox" item-value='cd' item-text="cdNm" return-object single-line></v-select>
 
-    <v-data-table
-        v-model="selected"
-        :headers="headers"
-        :items="desserts"
-        :single-select="singleSelect"
-        item-key="name"
-        show-select
-        class="elevation-1"
-    >
-      <template v-slot:top>
-        <v-switch v-model="singleSelect" label="Single select" class="pa-3"></v-switch>
-      </template>
-    </v-data-table>
+          </v-col>
+
+          <!--- 검색 버튼 --->
+          <v-col cols="1" >
+            <v-btn style="position: relative; left: 300%; top: 40%;" color="primary">조회</v-btn>
+          </v-col>
+        </v-row>
+
+        <!----Grid List ---->
+        <v-row>
+          <v-data-table height="250px"
+                        width="1000px"
+                        :headers="headers"
+                        v-model="customerSelected"
+                        :items="customerGridList"
+                        item-key="id"
+                        class="elevation-1"
+                        show-select
+                        checkbox-color="red"
+                        dense>
+          </v-data-table>
 
 
-  </v-container>
+
+
+        </v-row>
+
+
+      </v-container>
+  </v-form>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "CustomerView",
   data: () =>({
-    items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+    areaSelected: '',
+    areaSelectBox:[],
+    onlineSelected: '',
+    onlineSelectBox: [],
+    visitSelected:'',
+    visitSelectBox: [],
+    goodsSelected: '',
+    goodsSelectBox: [],
+    paymentSelected:'',
+    paymentSelectBox:[],
+
+    /*검색 유형*/
+    searchSelected: '',
+    searchSelectBox: [{cd: 10, cdNm:"계약자명"},{cd: 20, cdNm:"휴대전화번호코드"},
+      {cd: 30,cdNm: "CRM 계약코드"}, {cd: 40, cdNm: "로그인ID"}],
+
+    /* date picker */
+    sDMenu : false,
+    eDMenu : false,
+    startDate :  new Date().toISOString().substr(0,10),
+    endDate: new Date().toISOString().substr(0,10),
+    iconfont: 'fa',
+    icons: {iconfont: 'md'},
+    /* Grid List */
     headers:[
       { text: 'No.', align: 'start', sortable: false, value: 'name', width: "10%"},
       { text: '지사', value: 'calories',width: "60px" },
@@ -156,16 +193,35 @@ export default {
       { text: '등록일', value: 'iron' ,width: "90px"},
 
     ],
-    date: '',
-    singleSelect: false,
-    selected: [],
-    desserts: [],
-    menu2: false
+    customerGridList: [],
+    customerSelected: [],
+    valid: false
   }),
-  created() {
-  },
-  computed:{
+  mounted() {
+    //select box init
+    this.selectBoxInit();
+    console.log(this.searchSelected);
 
+
+  },
+  created() {
+
+  },
+  methods:{
+    selectBoxInit: function(){
+      axios.post("http://192.168.50.218:8084/userInfo/selectBox").then(res=>{
+        console.log(res);
+        this.areaSelectBox = res.data.data.area;
+        this.goodsSelectBox = res.data.data.goods;
+        this.onlineSelectBox = res.data.data.onlineStudy;
+        this.visitSelectBox = res.data.data.visiteStudy;
+        this.paymentSelectBox = res.data.data.payment;
+      }).catch(err =>{
+        console.log(err);
+      });
+
+
+    }
   }
 }
 </script>
