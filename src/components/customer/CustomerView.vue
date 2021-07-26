@@ -101,18 +101,21 @@
             </v-menu>
           </v-col>
           <!----- search bar---->
-          <v-col cols="12" lg="2" md="4">
+          <v-col cols="2" lg="2">
             <v-subheader>검색유형</v-subheader>
           </v-col>
-          <v-col cols="12" lg="2" md="4">
+          <v-col cols="2" lg="2">
             <v-select v-model="onlineSelected" :items="searchSelectBox" item-value='cd' item-text="cdNm" return-object single-line></v-select>
-
+          </v-col>
+          <v-col cols="2" lg="2">
+            <v-text-field ></v-text-field>
           </v-col>
 
           <!--- 검색 버튼 --->
           <v-col cols="1" >
-            <v-btn style="position: relative; left: 300%; top: 40%;" color="primary">조회</v-btn>
+            <v-btn style="position: relative; left: 100%; top: 40%;" color="primary">조회</v-btn>
           </v-col>
+
         </v-row>
 
         <!----Grid List ---->
@@ -200,7 +203,7 @@ export default {
   mounted() {
     //select box init
     this.selectBoxInit();
-    console.log(this.searchSelected);
+
 
 
   },

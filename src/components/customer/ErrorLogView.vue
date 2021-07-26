@@ -91,14 +91,23 @@ export default {
   },
   methods: {
     initData: function(){
-      axios.get("http://192.168.50.218:8084/loggerMenu/loggerGridList").then(res =>{
-        this.errorLogList = res.data.data;
-        this.totalCnt = res.data.processCnt;
-        console.log(this.totalCnt);
+      // axios.get("http://192.168.50.218:8084/loggerMenu/loggerGridList").then(res =>{
+      //   this.errorLogList = res.data.data;
+      //   this.totalCnt = res.data.processCnt;
+      //   console.log(this.totalCnt);
+      //
+      // }).catch(err =>{
+      //   console.log(err);
+      // });
 
+      this.$http.get("http://192.168.50.218:8084/loggerMenu/loggerGridList").then(res =>{
+        console.log(res);
+        this.errorLogList = res.data.data;
       }).catch(err =>{
         console.log(err);
       });
+
+
     },
     selectRow: function(e){
       console.log(e);
