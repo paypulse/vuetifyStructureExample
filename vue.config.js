@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath:"/dist/",
+  publicPath:"/dist/",   /*앱이 배포되는 기본 경로 */
   transpileDependencies: [
     'vuetify'
   ]
