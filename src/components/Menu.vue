@@ -58,12 +58,12 @@ export default{
     // menuList: [], --> 추후 API로 값을 가져올 곳
     eventBus: '',
     menuList: [
-      { icon: 'mdi-contacts','icon-alt':'mdi-contacts', text: '회원 관리',
-        model:false, path:'CustomerView',
-        subItems:[
-          {icon: 'mdi-files', text: '회원관리',path:'CustomerView'},
-          {icon: 'mdi-files', text: '취소/환불 회원관리',path:'CancelCusctomerView'}
-      ]},
+      // { icon: 'mdi-contacts','icon-alt':'mdi-contacts', text: '회원 관리',
+      //   model:false, path:'CustomerView',
+      //   subItems:[
+      //     {icon: 'mdi-files', text: '회원관리',path:'CustomerView'},
+      //     {icon: 'mdi-files', text: '취소/환불 회원관리',path:'CancelCusctomerView'}
+      // ]},
       // { icon: 'mdi-history', text: 'AS 관리', path:'AsSettings' },
       // { icon: 'mdi-card-account-details-outline', text: '교사관리', path:''},
       //List Group Example
@@ -82,12 +82,14 @@ export default{
           {icon:'mdi-files' , text: '에러 로그 관리', path:'ErrorLogView'},
           // {icon:'mdi-files' , text: '메뉴 관리' , path:'MenuSetting'}
         ]},
-      { icon: 'mdi-message', text: '문자관리', path:'',
-
-
-      },
+      { icon: 'mdi-message', text: '문자관리', path:''},
       { icon: 'mdi-cellphone-link', text: '앱 관리', path:'' },
       // { icon: 'mdi-keyboard', text: '납부관리', path:'' }
+      { icon: 'mdi-contacts','icon-alt':'mdi-contacts', text: '테스트 메뉴',
+        model:false, path:'TestPage',
+        subItems:[
+          {icon: 'mdi-files', text: '파일 업로드/다운로드',path:'TestPage'}
+      ]}
     ]
   }),
   mounted() {

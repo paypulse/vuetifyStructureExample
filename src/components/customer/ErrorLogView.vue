@@ -51,6 +51,7 @@
        </v-list-item>
 
      </v-list>
+      <v-btn @click="printT">Test Environment</v-btn>
 
     </v-row>
 
@@ -100,13 +101,12 @@ export default {
       //   console.log(err);
       // });
 
-      this.$http.get("http://192.168.50.218:8084/loggerMenu/loggerGridList").then(res =>{
+      this.$http.get("http://211.34.230.76:8080/crmTestExample_war/loggerMenu/loggerGridList").then(res =>{
         console.log(res);
         this.errorLogList = res.data.data;
       }).catch(err =>{
         console.log(err);
       });
-
 
     },
     selectRow: function(e){
@@ -132,7 +132,7 @@ export default {
         return;
       }
 
-      axios.post("http://192.168.50.218:8084/loggerMenu/loggerDeleteRow",{"loggerId":this.errorLogIds})
+      axios.post("http://211.34.230.76:8080/crmTestExample_war/loggerMenu/loggerDeleteRow",{"loggerId":this.errorLogIds})
       .then(res =>{
         console.log(res.data.status);
         alert("삭제  ", res.data.status);
@@ -143,6 +143,10 @@ export default {
       }).catch(err =>{
         alert(err);
       });
+
+    },
+    printT : function(){
+      console.log(process.env);
     }
 
   }

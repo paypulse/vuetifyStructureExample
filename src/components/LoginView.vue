@@ -31,7 +31,7 @@ export default {
 
    },
    login : function(){
-     axios.post("http://192.168.50.218:8084/login",{"id" : this.loginId, "pw": this.loginPassword}).then(res =>{
+     axios.post("http://211.34.230.76:8080/crmTestExample_war/login",{"id" : this.loginId, "pw": this.loginPassword}).then(res =>{
        console.log(res);
 
         if(res.data.data.loginYN === 1){
