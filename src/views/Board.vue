@@ -12,6 +12,7 @@
         <error-log-view v-if="menu === 'ErrorLogView' || menu === ''"></error-log-view>
         <MenuSetting v-if="menu === 'MenuSetting'"></MenuSetting>
         <TestPage v-if="menu=== 'TestPage'"></TestPage>
+        <com-code-view v-if="menu=== 'comCodeView'"></com-code-view>
 
                 <!---- 추후 메뉴 설정 기능 추가시  -->
         <!-- 로그인시 첫 화면 설정 -->
@@ -34,10 +35,11 @@ import Header from "@/components/Header";
 import ErrorLogView from "@/components/customer/ErrorLogView";
 import MenuSetting from "@/components/customer/MenuSetting";
 import TestPage from "@/components/customer/TestPage";
+import ComCodeView from "@/components/customer/comCodeView";
 
 export default{
   name: "Board",
-  components: {TestPage, MenuSetting,ErrorLogView, Menu, Footer,Header},
+  components: {ComCodeView, TestPage, MenuSetting,ErrorLogView, Menu, Footer,Header},
   data : () =>({
     value :"",
     menu: ""

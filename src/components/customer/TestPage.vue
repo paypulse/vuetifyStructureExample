@@ -4,19 +4,22 @@
         <h1>File upload</h1>
       </v-row>
       <v-row>
-        <v-btn @click="selectUploadFile"> 이미지 선택  </v-btn>
-        <span>결과 </span>
+        <v-file-input type="file" @change="selectUploadFile">파일 선택 </v-file-input>
       </v-row>
+
 
     </v-container>
 
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "TestPage",
   data : () =>({
-    file : File
+    file : '',
+    formData: null
   }),
   created() {
 
@@ -25,8 +28,17 @@ export default {
 
   },
   methods :{
-    selectUploadFile: function(){
-       
+    selectUploadFile: function(e){
+      console.log(e);
+      this.formData = new FormData();
+      this.formData.append("file", e);
+
+      console.log(this.formData);
+      axios.post("",);
+
+
+
+
 
     }
   }

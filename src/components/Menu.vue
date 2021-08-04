@@ -80,6 +80,7 @@ export default{
         model:false, path:'ErrorLogView',
         subItems:[
           {icon:'mdi-files' , text: '에러 로그 관리', path:'ErrorLogView'},
+          {icon:'mdi-files' , text: '공통 코드 관리', path:'comCodeView'}
           // {icon:'mdi-files' , text: '메뉴 관리' , path:'MenuSetting'}
         ]},
       { icon: 'mdi-message', text: '문자관리', path:''},
