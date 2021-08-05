@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 
 export default {
   name: "TestPage",
@@ -34,7 +34,7 @@ export default {
       this.formData.append("file", e);
 
       console.log(this.formData);
-      axios.post("",);
+
 
 
 

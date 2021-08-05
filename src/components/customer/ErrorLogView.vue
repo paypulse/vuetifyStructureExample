@@ -9,19 +9,22 @@
       <v-btn style="position: relative; left:85%;" color="primary">전체 삭제</v-btn>
     </v-row>
     &nbsp;
-    <v-row style="position: relative; left: 100px;">
-      <v-data-table height="250px"
-                    width="1000px"
-          :headers="headers"
-          v-model="selected"
-          :items="errorLogList"
-          item-key="id"
-          class="elevation-1"
-          show-select
-          checkbox-color="red"
-          dense
-          @click:row="selectRow">
-      </v-data-table>
+    <v-row>
+      <v-col>
+        <v-data-table height="250px"
+                      width="1000px"
+                      :headers="headers"
+                      v-model="selected"
+                      :items="errorLogList"
+                      item-key="id"
+                      class="elevation-20"
+                      show-select
+                      checkbox-color="red"
+                      dense
+                      @click:row="selectRow">
+        </v-data-table>
+      </v-col>
+
 
     </v-row>
 
@@ -51,7 +54,7 @@
        </v-list-item>
 
      </v-list>
-      <v-btn @click="printT">Test Environment</v-btn>
+<!--      <v-btn @click="printT">Test Environment</v-btn>-->
 
     </v-row>
 
@@ -64,12 +67,12 @@ export default {
   name: "ErrorLogView",
   data: () =>({
     headers: [
-      { text: 'ID'          , value: 'id'            ,width: "80px" , align:'center', sortable: true},
-      { text: 'errorTime'   , value: 'errorTime'     ,width: "120px", align:'center', sortable: true},
-      { text: 'message'     , value: 'message'       ,width: "250px", align:'center', sortable: true},
-      { text: 'logPath'     , value: 'logPath'       ,width: "100px", align:'center', sortable: true},
-      { text: 'phase'       , value: 'phase'         ,width: "90px" , align:'center', sortable: true},
-      { text: 'systemN'     , value: 'systemN'       ,width: "100px", align:'center', sortable: true}
+      { text: 'ID'          , value: 'id'            ,width: "80px" , align:'center', sortable: true, class: "primary white--text"},
+      { text: 'errorTime'   , value: 'errorTime'     ,width: "120px", align:'center', sortable: true, class: "primary white--text"},
+      { text: 'message'     , value: 'message'       ,width: "250px", align:'center', sortable: true, class: "primary white--text"},
+      { text: 'logPath'     , value: 'logPath'       ,width: "100px", align:'center', sortable: true, class: "primary white--text"},
+      { text: 'phase'       , value: 'phase'         ,width: "90px" , align:'center', sortable: true, class: "primary white--text"},
+      { text: 'systemN'     , value: 'systemN'       ,width: "100px", align:'center', sortable: true, class: "primary white--text"}
     ],
     errorLogList : [],
     selected:[],
@@ -101,7 +104,7 @@ export default {
       //   console.log(err);
       // });
 
-      this.$http.get("http://211.34.230.76:8080/crmTestExample_war/loggerMenu/loggerGridList").then(res =>{
+      this.$http.get(process.env.VUE_APP_SERVER_URL+":"+process.env.VUE_APP_SERVER_PORT+"/loggerMenu/loggerGridList").then(res =>{
         console.log(res);
         this.errorLogList = res.data.data;
       }).catch(err =>{
@@ -132,7 +135,7 @@ export default {
         return;
       }
 
-      axios.post("http://211.34.230.76:8080/crmTestExample_war/loggerMenu/loggerDeleteRow",{"loggerId":this.errorLogIds})
+      axios.post(process.env.VUE_APP_SERVER_URL+":"+process.env.VUE_APP_SERVER_PORT+"/loggerMenu/loggerDeleteRow",{"loggerId":this.errorLogIds})
       .then(res =>{
         console.log(res.data.status);
         alert("삭제  ", res.data.status);

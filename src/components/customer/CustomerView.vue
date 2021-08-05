@@ -212,7 +212,7 @@ export default {
   },
   methods:{
     selectBoxInit: function(){
-      axios.post("http://192.168.50.218:8084/userInfo/selectBox").then(res=>{
+      axios.post(process.env.VUE_APP_SERVER_URL+":"+process.env.VUE_APP_SERVER_PORT+"/userInfo/selectBox").then(res=>{
         console.log(res);
         this.areaSelectBox = res.data.data.area;
         this.goodsSelectBox = res.data.data.goods;
