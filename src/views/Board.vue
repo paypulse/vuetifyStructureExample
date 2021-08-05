@@ -6,7 +6,7 @@
       <!---Menu -->
       <Menu @menuItem="setMenu" v-if="value"></Menu>
       <!--- contents -->
-      <v-main  class="pt-2 pt-sm-2 pt-xs-2 pt-md-0 pt-lg-0 pt-xl-0">
+      <v-main  class="pt-2 pt-sm-2 pt-xs-2 pt-md-0 pt-lg-0 pt-xl-0" style="padding-left: 0%">
         <!---menu --->
 <!--        <customer-view v-if="menu === 'CustomerView' || menu === ''"></customer-view>-->
         <error-log-view v-if="menu === 'ErrorLogView' || menu === ''"></error-log-view>
