@@ -22,7 +22,7 @@ export default {
  },
  methods: {
    Login : function(){
-     // 쿠키와 세션 처리
+     // 쿠키와 세션 처리 필요
      console.log(this.loginId);
      console.log(this.loginPassword);
      this.login();
@@ -31,12 +31,12 @@ export default {
 
    },
    login : function(){
-     axios.post("http://211.34.230.76:8080/crmTestExample_war/login",{"id" : this.loginId, "pw": this.loginPassword}).then(res =>{
+     axios.post(process.env.VUE_APP_SERVER_URL+"/login",{"id" : this.loginId, "pw": this.loginPassword}).then(res =>{
        console.log(res);
 
         if(res.data.data.loginYN === 1){
           //this.$router.push("/board");
-          this.$router.push({name: 'Board', query: { userNm: res.data.data.userInfo.userNm} });
+          this.$router.push({name: 'Board', query: { userNm: res.data.data.userInfo.userNm , userCd: res.data.data.userInfo.userCd } });
 
         }else{
           alert(res.data.msg);

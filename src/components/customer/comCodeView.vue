@@ -85,7 +85,7 @@
                 <span>하위 코드 </span>
               </v-col>
               <v-col style="position: relative; top:-30px;">
-                <v-text-field v-model="subCode" value="subCode" required></v-text-field>
+                <v-text-field v-model="subCode" value="subCode" disabled></v-text-field>
               </v-col>
             </v-row>
 
@@ -109,6 +109,15 @@
 
             <v-row>
               <v-col cols=2 sm="3">
+                <span>우선 순위 </span>
+              </v-col>
+              <v-col style="position: relative; top:-30px;">
+                <v-text-field v-model="sort" value="sort" required></v-text-field>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols=2 sm="3">
                 <span>사용 여부 </span>
               </v-col>
               <v-col style="position: relative; top:-20px;">
@@ -118,6 +127,7 @@
                 </v-radio-group>
               </v-col>
             </v-row>
+
           </v-container>
         </v-card-text>
         <v-card-actions v-if="dialFlag === 0">
@@ -136,12 +146,7 @@
     </v-dialog>
   </v-container>
 
-
-
-
 </template>
-
-
 
 <script>
 import axios from "axios";
@@ -150,14 +155,15 @@ export default {
   name: "comCodeView",
   data: () => ({
     headers: [
-      {text : 'No.'       , value:'rnum'   , width: "100px", align :'center' , sortable: true, class: "primary white--text"},
+      {text : 'No.'      , value:'rnum'   , width: "100px", align :'center' , sortable: true, class: "primary white--text"},
       {text : '공통 코드'  , value:'mainCode'   , width: "100px", align :'center' , sortable: true, class: "primary white--text"},
       {text : '공통 코드 명', value:'mainCdNm'    , width: "100px", align :'center' , sortable: true, class: "primary white--text"},
       {text : '하위 코드'  , value:'subCode'    , width: "100px", align :'center' , sortable: true, class: "primary white--text"},
-      {text : '하위 코드명' , value:'subCodeNm'  , width: "150px", align :'center' , sortable: true, class: "primary white--text"},
-      {text : '사용 여부'   , value:'useYn'     , width: "100px", align :'center' , sortable: true, class: "primary white--text"},
-      {text : '생성자 명'   , value:'createdBy', width: "100px", align :'center' , sortable: true, class: "primary white--text"},
-      {text : '생성 일시'   , value:'createdAt', width: "150px", align :'center' , sortable: true, class: "primary white--text"},
+      {text : '하위 코드명', value:'subCodeNm'  , width: "150px", align :'center' , sortable: true, class: "primary white--text"},
+      {text : '우선 순위' , value:'sort'      , width: "80px", align :'center' , sortable: true, class: "primary white--text"},
+      {text : '사용 여부', value:'useYn'     , width: "100px", align :'center' , sortable: true, class: "primary white--text"},
+      {text : '생성자 명', value:'createdBy', width: "100px", align :'center' , sortable: true, class: "primary white--text"},
+      {text : '생성 일시', value:'createdAt', width: "150px", align :'center' , sortable: true, class: "primary white--text"},
       {text : '수정자 명', value:'updatedBy', width: "100px", align :'center' , sortable: true, class: "primary white--text"},
       {text : '수정 일시', value:'updatedAt', width: "150px", align :'center' , sortable: true, class: "primary white--text"},
       {text : '수정 버튼', value:'altBtn', width: "80px", align :'center' , sortable: true, class: "primary white--text" },
@@ -172,7 +178,10 @@ export default {
     mainCodeNm:'',
     subCode:'',
     subCodeNm:'',
-    useYn: 'Y'
+    useYn: 'Y',
+    sort:1,
+    userId: '',
+    userName: ''
   }),
   created() {
     this.initData();
@@ -180,14 +189,19 @@ export default {
   methods : {
     initData:  function(){
 
-      // 공통 코드 관리 list
-      axios.get(process.env.VUE_APP_SERVER_URL+":"+process.env.VUE_APP_SERVER_PORT+"/selectComCode").then(res => {
+      // 공통 코드 관리 list data setting
+      axios.get(process.env.VUE_APP_SERVER_URL+"/selectComCode").then(res => {
         console.log(res);
         this.comCodeList = res.data.data;
 
       }).catch(err => {
         console.log(err);
       });
+
+      //userId/name setting
+      this.userId = this.$route.query.userCd;
+      this.userName = this.$route.query.userNm;
+
 
     },
     createItem: function(){
@@ -211,22 +225,37 @@ export default {
       this.subCode = item.subCode;
       this.subCodeNm = item.subCodeNm;
       this.useYn = item.useYn;
-
-
-
+      this.sort = item.sort;
 
     },
     deleteItem: function(item){
       console.log(item);
+      var param  = new URLSearchParams();
+      param.append('mainCode', item.mainCode);
+      param.append('subCode', item.subCode);
+
+      axios.post(process.env.VUE_APP_SERVER_URL+"/deleteComCode",param)
+      .then(res => {
+        alert(res.data.msg);
+        this.dialog = false;
+        this.initData();
+      }).catch(err =>{
+         alert(err);
+      });
+
+
+
+
+
     },
     doubleCheck: function(){
       console.log(this.mainCode);
-      axios.get(process.env.VUE_APP_SERVER_URL+":"+process.env.VUE_APP_SERVER_PORT+"/selectCheckMainCd?mainCode="+this.mainCode)
+      axios.get(process.env.VUE_APP_SERVER_URL+"/selectCheckMainCd?mainCode="+this.mainCode)
       .then(res => {
         alert(res.data.msg);
 
       }).catch(err => {
-        console.log(err);
+        alert(err);
       });
 
 
@@ -237,19 +266,44 @@ export default {
       this.subCode = null;
       this.subCodeNm = null;
       this.useYn = 'Y';
+      this.sort = 1;
 
     },
     saveAllItem: function(){
-      console.log("save all item");
-      console.log(this.useYn);
-      //this.dialog = false;
-      console.log(this.subCodeNm);
+      let param = {"userId": this.userId, "userName": this.userName,
+                    "mainCode":this.mainCode, "mainCdNm": this.mainCodeNm,
+                    "subCode":this.subCode, "subCodeNm":this.subCodeNm,
+                    "useYn":this.useYn, "sort": this.sort};
+
+      axios.post(process.env.VUE_APP_SERVER_URL+"/insertComCode",param)
+      .then(res => {
+        alert(res.data.msg);
+        this.dialog = false;
+        this.initData();
+
+      }).catch(err =>{
+        alert(err);
+      });
+
 
 
     },
     alterItem: function(){
-      console.log(this.subCodeNm);
+      let param = {"userId": this.userId, "userName": this.userName,
+        "mainCode":this.mainCode, "mainCdNm": this.mainCodeNm,
+        "subCode":this.subCode, "subCodeNm":this.subCodeNm,
+        "useYn":this.useYn, "sort": this.sort};
+      axios.post(process.env.VUE_APP_SERVER_URL+"/updateComCode",param)
+      .then(res => {
+            alert(res.data.msg);
+            this.dialog = false;
+            this.initData();
+
+      }).catch(err =>{
+         alert(err);
+      });
     }
+
   }
 }
 </script>

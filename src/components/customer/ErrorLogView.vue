@@ -104,7 +104,7 @@ export default {
       //   console.log(err);
       // });
 
-      this.$http.get(process.env.VUE_APP_SERVER_URL+":"+process.env.VUE_APP_SERVER_PORT+"/loggerMenu/loggerGridList").then(res =>{
+      this.$http.get(process.env.VUE_APP_SERVER_URL+"/loggerMenu/loggerGridList").then(res =>{
         console.log(res);
         this.errorLogList = res.data.data;
       }).catch(err =>{
@@ -135,7 +135,7 @@ export default {
         return;
       }
 
-      axios.post(process.env.VUE_APP_SERVER_URL+":"+process.env.VUE_APP_SERVER_PORT+"/loggerMenu/loggerDeleteRow",{"loggerId":this.errorLogIds})
+      axios.post(process.env.VUE_APP_SERVER_URL+"/loggerMenu/loggerDeleteRow",{"loggerId":this.errorLogIds})
       .then(res =>{
         console.log(res.data.status);
         alert("삭제  ", res.data.status);

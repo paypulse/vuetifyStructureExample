@@ -24,6 +24,7 @@ export default{
   }),
   mounted() {
     //this.userName = "슈퍼관리자 님 반갑습니다.";
+    console.log(this.$route.query.userCd);
     this.userName = this.$route.query.userNm + "님 반갑습니다.";
   },
   methods:{
