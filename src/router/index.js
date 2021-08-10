@@ -21,16 +21,16 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
   },
   {
+    path: '/logout',
+    name: 'Logout',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Logout.vue')
+  },
+  {
     path: '/board',
     name: 'Board',
     props: true,
-    component: () => import('../views/Board')
+    component: () => import('../views/customer/Board')
 
-  },
-  {
-    path: '/dashBoard',
-    name: 'DashBoard',
-    component: () => import('../views/DashBoard')
   },
   {
     path: '/cutomer',

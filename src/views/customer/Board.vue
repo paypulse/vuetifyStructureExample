@@ -30,7 +30,7 @@
 <script>
 import Vue from 'vue';
 import Footer from "@/components/Footer";
-import Menu from "@/components/Menu";
+import Menu from "@/components/customer/Menu";
 import Header from "@/components/Header";
 import ErrorLogView from "@/components/customer/ErrorLogView";
 import MenuSetting from "@/components/customer/MenuSetting";
