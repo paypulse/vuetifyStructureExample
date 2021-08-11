@@ -24,8 +24,8 @@ export default{
   }),
   mounted() {
     //this.userName = "슈퍼관리자 님 반갑습니다.";
-    console.log(this.$route.query.userCd);
-    this.userName = this.$route.query.userNm + "님 반갑습니다.";
+
+    this.userName = this.$store.state.userNm + "님 반갑습니다.";
   },
   methods:{
     stop:function (){
@@ -39,8 +39,9 @@ export default{
 
     },
     logout: function(){
+      this.$store.state.token = '';
       console.log("로그아웃");
-      this.$router.push("/");
+      this.$router.push("/logout");
 
     }
   }

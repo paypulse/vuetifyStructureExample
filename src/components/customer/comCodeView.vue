@@ -190,7 +190,8 @@ export default {
     initData:  function(){
 
       // 공통 코드 관리 list data setting
-      axios.get(process.env.VUE_APP_SERVER_URL+"/selectComCode").then(res => {
+      axios.get(process.env.VUE_APP_SERVER_URL+"/selectComCode",
+          {headers: {"jwtauthtoken" : this.$store.state.token}}).then(res => {
         console.log(res);
         this.comCodeList = res.data.data;
 
@@ -199,8 +200,8 @@ export default {
       });
 
       //userId/name setting
-      this.userId = this.$route.query.userCd;
-      this.userName = this.$route.query.userNm;
+      this.userId = this.$store.state.userCd;
+      this.userName = this.$store.state.userNm;
 
 
     },
