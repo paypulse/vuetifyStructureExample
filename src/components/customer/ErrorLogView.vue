@@ -79,7 +79,8 @@ export default {
     errorLogIds: [],
     selectMsg:'',
     errorTime:'',
-    totalCnt: 0
+    totalCnt: 0,
+    config:''
   }),
   created() {
     this.initData();
@@ -104,7 +105,12 @@ export default {
       //   console.log(err);
       // });
 
-      this.$http.get(process.env.VUE_APP_SERVER_URL+"/loggerMenu/loggerGridList").then(res =>{
+      console.log(this.$store.state.token);
+
+
+      this.$http.get(process.env.VUE_APP_SERVER_URL+"/loggerMenu/loggerGridList",
+          {headers: { "jwtAuthToken": this.$store.state.token}} )
+      .then(res =>{
         console.log(res);
         this.errorLogList = res.data.data;
       }).catch(err =>{

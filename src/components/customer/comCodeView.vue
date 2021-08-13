@@ -190,7 +190,7 @@ export default {
     initData:  function(){
 
       // 공통 코드 관리 list data setting
-      axios.get(process.env.VUE_APP_SERVER_URL+"/selectComCode",
+      axios.get(process.env.VUE_APP_SERVER_URL+"/comCode/selectComCode",
           {headers: {"jwtauthtoken" : this.$store.state.token}}).then(res => {
         console.log(res);
         this.comCodeList = res.data.data;

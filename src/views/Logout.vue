@@ -23,6 +23,7 @@ export default {
   methods:{
     Login: function(){
 
+
     }
   }
 }
