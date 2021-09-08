@@ -10,7 +10,7 @@
 </template>
 <script>
 
-//import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "Login",
@@ -35,23 +35,23 @@ export default {
       console.log('token check :',this.$store.state.token);
 
 
-      // axios.post(process.env.VUE_APP_SERVER_URL+"/login",{"id" : this.loginId, "pw": this.loginPassword}).then(res =>{
-      //   console.log(res);
-      //
-      //   if(res.data.processCnt === 1){
-      //     this.$router.push("/board");
-      //     //this.$router.push({name: 'Board', query: { userNm: res.data.data.userInfo.userNm , userCd: res.data.data.userInfo.userCd } });
-      //     this.$store.state.userNm = res.data.data.userNm;
-      //     this.$store.state.userCd = res.data.data.userCd;
-      //     this.$store.state.token = res.headers.jwtauthtoken;
-      //
-      //   }else{
-      //     alert(res.data.msg);
-      //   }
-      //
-      // }).catch(err =>{
-      //   console.log(err);
-      // });
+      axios.post(process.env.VUE_APP_SERVER_URL+"/login",{"id" : this.loginId, "pw": this.loginPassword}).then(res =>{
+        console.log(res);
+
+        if(res.data.processCnt === 1){
+          this.$router.push("/board");
+          //this.$router.push({name: 'Board', query: { userNm: res.data.data.userInfo.userNm , userCd: res.data.data.userInfo.userCd } });
+          this.$store.state.userNm = res.data.data.userNm;
+          this.$store.state.userCd = res.data.data.userCd;
+          this.$store.state.token = res.headers.jwtauthtoken;
+
+        }else{
+          alert(res.data.msg);
+        }
+
+      }).catch(err =>{
+        console.log(err);
+      });
 
 
 
