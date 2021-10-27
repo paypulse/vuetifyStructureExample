@@ -9,6 +9,7 @@
       <v-main  class="pt-2 pt-sm-2 pt-xs-2 pt-md-0 pt-lg-0 pt-xl-0" style="padding-left: 0%">
         <!---menu --->
         <customer-view v-if="menu === 'CustomerView' || menu === ''"></customer-view>
+        <customer-detail-view v-if="menu === 'CustomerDetailView'"></customer-detail-view>
         <error-log-view v-if="menu === 'ErrorLogView'"></error-log-view>
 <!--        <MenuSetting v-if="menu === 'MenuSetting'"></MenuSetting>-->
 <!--        <TestPage v-if="menu=== 'TestPage'"></TestPage>-->
@@ -37,11 +38,12 @@ import ErrorLogView from "@/components/customer/ErrorLogView";
 // import TestPage from "@/components/customer/TestPage";
 import ComCodeView from "@/components/customer/comCodeView";
 import CustomerView from "@/components/customer/CustomerView";
+import CustomerDetailView from "@/components/customer/CustomerDetailView"
 
 export default{
   name: "Board",
   components: {
-    CustomerView, ComCodeView,/* TestPage, MenuSetting,*/ErrorLogView, Menu, Footer,Header},
+    CustomerView,CustomerDetailView, ComCodeView,/* TestPage, MenuSetting,*/ErrorLogView, Menu, Footer,Header},
   data : () =>({
     value :"",
     menu: ""

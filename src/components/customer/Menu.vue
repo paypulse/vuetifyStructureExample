@@ -61,7 +61,8 @@ export default{
       { icon: 'mdi-contacts','icon-alt':'mdi-contacts', text: '회원 관리',
         model:false, path:'CustomerView',
         subItems:[
-          {icon: 'mdi-files', text: '회원관리',path:'CustomerView'}
+          {icon: 'mdi-files', text: '회원관리',path:'CustomerView'},
+          {icon: 'mdi-files', text: '회원관리상세',path:'CustomerDetailView'}
       ]},
       // List Group Example
       // { icon: 'mdi-home',

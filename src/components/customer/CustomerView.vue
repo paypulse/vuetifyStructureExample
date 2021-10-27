@@ -9,15 +9,16 @@
       <v-col cols="1">
         <v-subheader style="position: relative; top:30%">상품</v-subheader>
       </v-col>
-      <v-col  cols="2">
-        <v-select style="position: relative; top:10%" v-model="goodsSelected" :items="goodsSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>
+      <v-col cols="2">
+<!--        <v-select style="position: relative; top:10%" label="상품" v-model="goodsSelected"  :items="goodsSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>-->
+        <v-select label="상품" :closeOnSelect="true" auto></v-select>
       </v-col>
       <v-col cols="1"></v-col>
       <v-col cols="2">
         <v-subheader style="position: relative; top:30%">학습 상태</v-subheader>
       </v-col>
       <v-col cols="2">
-        <v-select style="position: relative; top:10%" v-model="goodsSelected" :items="goodsSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>
+        <v-select style="position: relative; top:10%" label="학습 상태" v-model="onlineSelected" :items="onlineSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>
       </v-col>
 
     </v-row>
@@ -103,7 +104,6 @@
       <v-col cols="1" md="2" lg="3">
         <v-text-field ></v-text-field>
       </v-col>
-
     </v-row>
 
     <v-divider></v-divider>
@@ -111,17 +111,15 @@
     <v-row no-gutters>
       <!--- 검색 버튼 --->
       <v-col cols="12" >
-        <v-btn style="position: relative; left:90%; top: 30%" color="primary">초기화</v-btn>
-        <v-btn style="position: relative; left:91%; top: 30%" color="primary">조회</v-btn>
+        <v-btn style="position: relative; left:87%; top: 30%" color="primary" v-on:click="selectReset">초기화</v-btn>
+        <v-btn style="position: relative; left:88%; top: 30%" color="primary" v-on:click="selectList">조회</v-btn>
       </v-col>
-
     </v-row>
 
     <v-row no-gutters>
       <v-col cols="1">
-        <v-select style="position: relative; top:10%;left:1100%;" v-model="onlineSelected" :items="searchSelectBox" item-value='cd' item-text="cdNm" return-object single-line></v-select>
+        <v-select style="position: relative; top:10%;left:1100%;" v-model="rowCountSelected" :items="rowCountSelectBox" item-value='cd' item-text="cdNm" return-object single-line></v-select>
       </v-col>
-
     </v-row>
 
 
@@ -132,7 +130,7 @@
         <v-data-table height="250px"
                       width="1000px"
                       :headers="headers"
-                      v-model="customerSelected"
+                      v-model="customerGridList"
                       :items="customerGridList"
                       item-key="id"
                       class="elevation-1"
@@ -140,8 +138,8 @@
                       dense>
         </v-data-table>
         <v-pagination
-            v-model="customerSelected"
-            :length="6"
+            v-model="page"
+            :length="pageLength"
         ></v-pagination>
       </v-col>
     </v-row>
@@ -159,16 +157,13 @@ import axios from "axios";
 export default {
   name: "CustomerView",
   data: () =>({
-    areaSelected: '',
-    areaSelectBox:[],
-    onlineSelected: '',
+    //온라인 학습 상태
+    onlineSelected: {},
     onlineSelectBox: [],
-    visitSelected:'',
-    visitSelectBox: [],
-    goodsSelected: '',
+    //상품
+    goodsSelected: {},
     goodsSelectBox: [],
-    paymentSelected:'',
-    paymentSelectBox:[],
+
 
     /*검색 유형*/
     searchSelected: '',
@@ -180,6 +175,9 @@ export default {
     /*row count 갯수*/
     rowCountSelected: '',
     rowCountSelectBox : [
+      {cd: 5,  cdNm:"5개씩"},
+      {cd: 10, cdNm:"10개씩"},
+      {cd: 15, cdNm:"15개씩"},
 
     ],
     /* date picker */
@@ -191,7 +189,6 @@ export default {
     icons: {iconfont: 'md'},
     /* Grid List */
     headers:[
-
       { text: '회원 번호' ,value: 'center',   width: "90px" },
       { text: '회원 명' ,  align: 'center', value: 'fat',width: "90px"  },
       { text: '자녀 명', value: 'carbs',width: "90px"  },
@@ -201,10 +198,12 @@ export default {
       { text: '학습 상태', value: 'iron',width: "90px" },
       { text: '회원 등록일', value: 'iron',width: "90px" },
       { text: '관리', value: 'iron',width: "90px" }
-
-
     ],
+
     customerGridList: [],
+    pageLength: 5,
+    page: 1,
+
     customerSelected: [],
     valid: false
   }),
@@ -212,27 +211,31 @@ export default {
     //select box init
     this.selectBoxInit();
 
-    //Grid list init
-
-
   },
   created() {
 
   },
   methods:{
     selectBoxInit: function(){
-      axios.post(process.env.VUE_APP_SERVER_URL+":"+process.env.VUE_APP_SERVER_PORT+"/userInfo/selectBox").then(res=>{
-        console.log(res);
-        this.areaSelectBox = res.data.data.area;
+      axios.post(process.env.VUE_APP_SERVER_URL+"/userInfo/selectBox",
+          '',{headers: {"jwtAuthToken": this.$store.state.token }} )
+      .then(res=>{
         this.goodsSelectBox = res.data.data.goods;
         this.onlineSelectBox = res.data.data.onlineStudy;
-        this.visitSelectBox = res.data.data.visiteStudy;
-        this.paymentSelectBox = res.data.data.payment;
+
+
       }).catch(err =>{
         console.log(err);
       });
 
+    },
 
+    selectReset: function(){
+      console.log("reset");
+    },
+
+    selectList: function(){
+      console.log("select");
     }
 
 
