@@ -5,13 +5,13 @@
     </v-row>
 
 
-    <v-row no-gutters>
+    <v-row no-gutters >
       <v-col cols="1">
         <v-subheader style="position: relative; top:30%">상품</v-subheader>
       </v-col>
       <v-col cols="2">
-<!--        <v-select style="position: relative; top:10%" label="상품" v-model="goodsSelected"  :items="goodsSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>-->
-        <v-select label="상품" :closeOnSelect="true" auto></v-select>
+        <v-select style="position: relative; top:10%" label="상품" v-model="goodsSelected"  :items="goodsSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>
+
       </v-col>
       <v-col cols="1"></v-col>
       <v-col cols="2">
@@ -106,37 +106,30 @@
       </v-col>
     </v-row>
 
-    <v-divider></v-divider>
-
     <v-row no-gutters>
       <!--- 검색 버튼 --->
       <v-col cols="12" >
-        <v-btn style="position: relative; left:87%; top: 30%" color="primary" v-on:click="selectReset">초기화</v-btn>
-        <v-btn style="position: relative; left:88%; top: 30%" color="primary" v-on:click="selectList">조회</v-btn>
+        <v-btn style="position: relative; left:87%; bottom: 20%" color="primary" v-on:click="selectReset">초기화</v-btn>
+        <v-btn style="position: relative; left:88%; bottom: 20%" color="primary" v-on:click="selectList">조회</v-btn>
       </v-col>
     </v-row>
 
-    <v-row no-gutters>
-      <v-col cols="1">
-        <v-select style="position: relative; top:10%;left:1100%;" v-model="rowCountSelected" :items="rowCountSelectBox" item-value='cd' item-text="cdNm" return-object single-line></v-select>
-      </v-col>
-    </v-row>
-
+    <v-divider></v-divider>
 
 
     <!----Grid List ---->
     <v-row >
-      <v-col>
-        <v-data-table height="250px"
-                      width="1000px"
+      <v-col style="position: absolute; top:40%; width: 92%; left:3%">
+        <v-data-table height="450px"
                       :headers="headers"
-                      v-model="customerGridList"
                       :items="customerGridList"
-                      item-key="id"
-                      class="elevation-1"
-                      hide-default-footer
+                      class="elevation-20"
                       dense>
+          <template v-slot:item.detailItem="{ item }">
+            <v-btn @click="detailItem(item)">보기</v-btn>
+          </template>
         </v-data-table>
+
         <v-pagination
             v-model="page"
             :length="pageLength"
@@ -189,15 +182,15 @@ export default {
     icons: {iconfont: 'md'},
     /* Grid List */
     headers:[
-      { text: '회원 번호' ,value: 'center',   width: "90px" },
-      { text: '회원 명' ,  align: 'center', value: 'fat',width: "90px"  },
-      { text: '자녀 명', value: 'carbs',width: "90px"  },
-      { text: '학습앱 ID', value: 'iron',width: "90px" },
-      { text: '부모앱 ID', value: 'iron',width: "90px" },
-      { text: '상품명', value: 'iron',width: "90px" },
-      { text: '학습 상태', value: 'iron',width: "90px" },
-      { text: '회원 등록일', value: 'iron',width: "90px" },
-      { text: '관리', value: 'iron',width: "90px" }
+      { text: '회원 번호' ,value: 'custCd'  ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"},
+      { text: '회원  명'  ,value: 'userNm'  ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"},
+      { text: '자녀  명'  ,value: 'childNm' ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"},
+      { text: '학습앱 ID' ,value: 'fCid'    ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"},
+      { text: '부모앱 ID' ,value: 'fPid'    ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"},
+      { text: '상품 명'   ,value: 'goodNm'  ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"},
+      { text: '학습 상태'  ,value: 'stuStat' ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"},
+      { text: '회원 등록일',value: 'createAt' ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"},
+      { text: '관리'      ,value: 'detailItem' ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"}
     ],
 
     customerGridList: [],
@@ -211,6 +204,9 @@ export default {
     //select box init
     this.selectBoxInit();
 
+    //select grid List
+    this.selectGridInit();
+
   },
   created() {
 
@@ -220,6 +216,7 @@ export default {
       axios.post(process.env.VUE_APP_SERVER_URL+"/userInfo/selectBox",
           '',{headers: {"jwtAuthToken": this.$store.state.token }} )
       .then(res=>{
+        console.log("res : ",res);
         this.goodsSelectBox = res.data.data.goods;
         this.onlineSelectBox = res.data.data.onlineStudy;
 
@@ -229,18 +226,30 @@ export default {
       });
 
     },
+    selectGridInit: function(){
+      axios.post(process.env.VUE_APP_SERVER_URL+ "/userInfo/userInfoGridList",
+      '', {headers: {"jwtAuthToken": this.$store.state.token }} )
+      .then(res =>{
+        console.log(res);
+        this.customerGridList = res.data.data;
 
+      }).catch(err =>{
+        console.log(err);
+      });
+    },
     selectReset: function(){
       console.log("reset");
     },
 
     selectList: function(){
       console.log("select");
+    },
+    detailItem: function(item){
+       console.log("datail");
+       console.log("item : ", item);
+
+
     }
-
-
-
-
 
   }
 }
