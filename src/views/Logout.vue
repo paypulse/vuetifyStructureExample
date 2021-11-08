@@ -22,7 +22,7 @@ export default {
   },
   methods:{
     Login: function(){
-
+        // 다시 login 표시 하기
 
     }
   }

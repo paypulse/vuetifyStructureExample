@@ -126,3 +126,11 @@ input[type=text]:placeholder {
 */
 .menuC { flex: 1;border-right: 1px solid #ebebeb; background-color: #56baed;}
 
+/*v-select*/
+.v-select.v-text-field input{
+    flex: 1 1;
+    min-width: 0;
+    pointer-events: none;
+    position: relative;
+    display: contents;
+}

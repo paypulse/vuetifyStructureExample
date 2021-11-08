@@ -25,7 +25,7 @@ export default{
   mounted() {
     //this.userName = "슈퍼관리자 님 반갑습니다.";
 
-    this.userName = this.$store.state.userNm + "님 반갑습니다.";
+    this.userName = sessionStorage.getItem('userNm').toString() + "님 반갑습니다.";
   },
   methods:{
     stop:function (){
@@ -41,7 +41,10 @@ export default{
     logout: function(){
       this.$store.state.token = '';
       console.log("로그아웃");
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('userNm');
       this.$router.push("/logout");
+
 
     }
   }

@@ -10,9 +10,9 @@
         <v-subheader style="position: relative; top:30%">상품</v-subheader>
       </v-col>
       <v-col cols="2">
-        <v-select style="position: relative; top:10%" label="상품" v-model="goodsSelected"  :items="goodsSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>
-
+        <v-select  style="position: relative; top:10%; " label="상품" v-model="goodsSelected"  :items="goodsSelectBox" item-value='codeCd' item-text="codeNm" return-object single-line></v-select>
       </v-col>
+
       <v-col cols="1"></v-col>
       <v-col cols="2">
         <v-subheader style="position: relative; top:30%">학습 상태</v-subheader>
@@ -84,12 +84,12 @@
         </v-menu>
       </v-col>
       <v-col cols="7">
-        <v-btn style="position: relative; top:20%;">오늘</v-btn>
-        <v-btn style="position: relative; top:20%; left: 2%">7일</v-btn>
-        <v-btn style="position: relative; top:20%; left: 4%">15일</v-btn>
-        <v-btn style="position: relative; top:20%; left: 6%">30일</v-btn>
-        <v-btn style="position: relative; top:20%; left: 8%">60일</v-btn>
-        <v-btn style="position: relative; top:20%; left: 10%">1년</v-btn>
+        <v-btn style="position: relative; top:20%;" v-on:click="dateCheck(1)">오늘</v-btn>
+        <v-btn style="position: relative; top:20%; left: 2%" v-on:click="dateCheck(2)" >7일</v-btn>
+        <v-btn style="position: relative; top:20%; left: 4%" v-on:click="dateCheck(3)">15일</v-btn>
+        <v-btn style="position: relative; top:20%; left: 6%" v-on:click="dateCheck(4)">30일</v-btn>
+        <v-btn style="position: relative; top:20%; left: 8%" v-on:click="dateCheck(5)">60일</v-btn>
+        <v-btn style="position: relative; top:20%; left: 10%" v-on:click="dateCheck(6)">1년</v-btn>
       </v-col>
     </v-row>
       <!----- search bar---->
@@ -98,12 +98,13 @@
         <v-subheader style="position: relative; top:20%">검색유형</v-subheader>
       </v-col>
       <v-col cols="2">
-        <v-select v-model="onlineSelected" :items="searchSelectBox" item-value='cd' item-text="cdNm" return-object single-line></v-select>
+        <v-select style="position: relative; top:18%; " label="검색 유형" v-model="searchSelected" :items="searchSelectBox" item-value='cd' item-text="cdNm" return-object single-line></v-select>
       </v-col>
 
       <v-col cols="1" md="2" lg="3">
-        <v-text-field ></v-text-field>
+        <v-text-field v-model="searchText" ></v-text-field>
       </v-col>
+
     </v-row>
 
     <v-row no-gutters>
@@ -124,38 +125,51 @@
                       :headers="headers"
                       :items="customerGridList"
                       class="elevation-20"
+                      :page.sync="pagination.page"
+                      @page-count="pagination.pageCount = $event"
                       dense>
           <template v-slot:item.detailItem="{ item }">
             <v-btn @click="detailItem(item)">보기</v-btn>
           </template>
         </v-data-table>
-
         <v-pagination
-            v-model="page"
-            :length="pageLength"
+            v-model="pagination.page"
+            :length="pagination.pageCount"
+            :total-visible="pagination.visible"
         ></v-pagination>
       </v-col>
     </v-row>
 
-
   </v-container>
-
 
 
 </template>
 
 <script>
+
 import axios from "axios";
 
 export default {
   name: "CustomerView",
   data: () =>({
+
+    //test publishing
+    items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+
     //온라인 학습 상태
     onlineSelected: {},
     onlineSelectBox: [],
     //상품
     goodsSelected: {},
     goodsSelectBox: [],
+
+    //page
+    pagination:{
+      page: 1,
+      perPage: 0,
+      visible: 10,
+      pageCount: 0
+    },
 
 
     /*검색 유형*/
@@ -165,6 +179,8 @@ export default {
       {cd: 20, cdNm:"휴대전화번호코드"},
       {cd: 30, cdNm:"CRM 계약코드"},
       {cd: 40, cdNm:"로그인ID"}],
+    searchText: '',
+
     /*row count 갯수*/
     rowCountSelected: '',
     rowCountSelectBox : [
@@ -176,8 +192,9 @@ export default {
     /* date picker */
     sDMenu : false,
     eDMenu : false,
-    startDate :  new Date().toISOString().substr(0,10),
-    endDate: new Date().toISOString().substr(0,10),
+    startDate : (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+    endDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+    dateFormatted: '',
     iconfont: 'fa',
     icons: {iconfont: 'md'},
     /* Grid List */
@@ -190,36 +207,52 @@ export default {
       { text: '상품 명'   ,value: 'goodNm'  ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"},
       { text: '학습 상태'  ,value: 'stuStat' ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"},
       { text: '회원 등록일',value: 'createAt' ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"},
-      { text: '관리'      ,value: 'detailItem' ,width: "90px"  ,align:'center', sortable: true, class: "primary white--text"}
+      { text: '관리'      ,value: 'detailItem',width: "90px",align:'center', sortable: true, class: "primary white--text"}
     ],
 
     customerGridList: [],
-    pageLength: 5,
-    page: 1,
-
     customerSelected: [],
-    valid: false
+    valid: false,
+
+    /*now, year, month, day*/
+    nowD : 0,
+    year : 0,
+    month :0,
+    day :0,
+    after7:'',
+    after15:'',
+    after30:'',
+    after60:'',
+    afterYear:''
+
   }),
   mounted() {
+
     //select box init
     this.selectBoxInit();
 
     //select grid List
     this.selectGridInit();
 
+
   },
   created() {
+    //select grid List
+    this.selectGridInit();
+  },
+  update(){
+
 
   },
   methods:{
     selectBoxInit: function(){
+
       axios.post(process.env.VUE_APP_SERVER_URL+"/userInfo/selectBox",
-          '',{headers: {"jwtAuthToken": this.$store.state.token }} )
+          '',{headers: {"jwtAuthToken": sessionStorage.getItem('token').toString() }} )
       .then(res=>{
         console.log("res : ",res);
         this.goodsSelectBox = res.data.data.goods;
         this.onlineSelectBox = res.data.data.onlineStudy;
-
 
       }).catch(err =>{
         console.log(err);
@@ -227,8 +260,9 @@ export default {
 
     },
     selectGridInit: function(){
+      console.log('token : ', sessionStorage.getItem('token').toString());
       axios.post(process.env.VUE_APP_SERVER_URL+ "/userInfo/userInfoGridList",
-      '', {headers: {"jwtAuthToken": this.$store.state.token }} )
+      '', {headers: {"jwtAuthToken": sessionStorage.getItem('token').toString() }} )
       .then(res =>{
         console.log(res);
         this.customerGridList = res.data.data;
@@ -238,16 +272,71 @@ export default {
       });
     },
     selectReset: function(){
-      console.log("reset");
+      this.onlineSelected = {};
+      this.goodsSelected = {};
+      this.searchText ='';
+      this.searchSelected= '';
+      this.startDate = this.nowD;
+      this.endDate = this.nowD;
+
+
     },
 
     selectList: function(){
-      console.log("select");
+      console.log(this.onlineSelected);
+      console.log(this.goodsSelected);
+
     },
     detailItem: function(item){
-       console.log("datail");
-       console.log("item : ", item);
+      //component 변경
+      this.$emit("customerDetail", item);
 
+    },
+    initDate: function(){
+      const d = new Date();
+      let date =  new Date().toISOString().slice(0,10);
+
+      this.nowD = date;
+      this.year = d.getFullYear();
+      this.month = d.getMonth();
+      this.day = d.getDate();
+
+      this.after7 = new Date(this.year,this.month, this.day -6).toISOString().slice(0,10);
+      this.after15= new Date(this.year,this.month, this.day -14).toISOString().slice(0,10);
+      this.after30= new Date(this.year,this.month, this.day -29).toISOString().slice(0,10);
+      this.after60= new Date(this.year,this.month, this.day -59).toISOString().slice(0,10);
+      this.afterYear = new Date(this.year-1,this.month, this.day+1).toISOString().slice(0,10);
+
+    },
+    dateCheck: function(value){
+      this.initDate();
+
+      switch (value) {
+        case 1: // 오늘
+            this.startDate = this.nowD;
+            this.endDate = this.nowD;
+          break;
+        case 2: // 7일
+            this.startDate = this.after7;
+            this.endDate = this.nowD;
+          break;
+        case 3: //15일
+            this.startDate = this.after15;
+            this.endDate = this.nowD;
+          break;
+        case 4: //30일
+            this.startDate = this.after30;
+            this.endDate = this.nowD;
+          break;
+        case 5: //60일
+            this.startDate = this.after60;
+            this.endDate = this.nowD;
+          break;
+        case 6: //1년
+            this.startDate = this.afterYear;
+            this.endDate = this.nowD;
+          break;
+      }
 
     }
 

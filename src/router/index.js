@@ -41,6 +41,11 @@ const routes = [
     path: '/errorLog',
     name: 'ErrorLogView',
     component: () => import('../components/customer/ErrorLogView')
+  },
+  {
+    path: '/customerDetail',
+    name: 'CustomerDetailView',
+    component: () => import('../components/customer/CustomerDetailView')
   }
 ]
 
