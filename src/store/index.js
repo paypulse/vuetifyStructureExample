@@ -13,8 +13,17 @@ export default new Vuex.Store({
     token: ''
   },
   mutations: {
+
   },
   actions: {
+
+    login({commit}, loginObj){
+        console.log({commit});
+        console.log(loginObj);
+        // login check 에 해당 되는 부분들이 여기 재정의
+
+    }
+
   },
   modules: {
 

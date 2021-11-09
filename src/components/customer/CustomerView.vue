@@ -175,10 +175,10 @@ export default {
     /*검색 유형*/
     searchSelected: '',
     searchSelectBox: [
-      {cd: 10, cdNm:"계약자명"},
-      {cd: 20, cdNm:"휴대전화번호코드"},
-      {cd: 30, cdNm:"CRM 계약코드"},
-      {cd: 40, cdNm:"로그인ID"}],
+      {cd: "10", cdNm:"계약자명"},
+      {cd: "20", cdNm:"휴대전화번호코드"},
+      {cd: "30", cdNm:"CRM 계약코드"},
+      {cd: "40", cdNm:"로그인ID"}],
     searchText: '',
 
     /*row count 갯수*/
@@ -230,11 +230,8 @@ export default {
 
     //select box init
     this.selectBoxInit();
-
     //select grid List
     this.selectGridInit();
-
-
   },
   created() {
     //select grid List
@@ -260,7 +257,7 @@ export default {
 
     },
     selectGridInit: function(){
-      console.log('token : ', sessionStorage.getItem('token').toString());
+
       axios.post(process.env.VUE_APP_SERVER_URL+ "/userInfo/userInfoGridList",
       '', {headers: {"jwtAuthToken": sessionStorage.getItem('token').toString() }} )
       .then(res =>{
@@ -283,8 +280,11 @@ export default {
     },
 
     selectList: function(){
-      console.log(this.onlineSelected);
-      console.log(this.goodsSelected);
+      let param = {"goods":this.goodsSelected.codeCd, "eduStatus": this.onlineSelected.codeCd, "search": this.searchSelected.cd,"searchTxt": this.searchText};
+
+      console.log(param);
+
+
 
     },
     detailItem: function(item){
